@@ -1,12 +1,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="it.jaschke.alexandria.ListOfBooks">
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="it.jaschke.alexandria.ListOfBooks">
 
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center_horizontal|top">
+
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,7 +23,7 @@
             android:layout_alignParentEnd="true"/>
 
         <EditText
-            android:layout_width = "fill_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/searchText"
             android:inputType="text"
@@ -34,17 +37,17 @@
             android:layout_marginBottom="10dp"/>
 
 
-        <ListView android:id="@+id/listOfBooks"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:layout_alignParentLeft="true"
-                  android:layout_marginLeft="0dp"
-                  android:layout_below="@+id/searchText"
-                  android:layout_alignRight="@id/searchButton"
-                  android:layout_alignParentRight="true"
-                  android:layout_alignParentStart="true"
-                  android:layout_toRightOf="@id/searchButton"/>
-
+        <ListView
+            android:id="@+id/listOfBooks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="0dp"
+            android:layout_below="@+id/searchText"
+            android:layout_alignRight="@id/searchButton"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_toRightOf="@id/searchButton"/>
 
 
     </RelativeLayout>

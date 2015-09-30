@@ -119,7 +119,7 @@ public class TestDb extends AndroidTestCase {
         for (Map.Entry<String, Object> entry : valueSet) {
             String columnName = entry.getKey();
             int idx = valueCursor.getColumnIndex(columnName);
-            assertFalse(columnName,idx == -1);
+            assertFalse(columnName, idx == -1);
             String expectedValue = entry.getValue().toString();
             assertEquals(expectedValue, valueCursor.getString(idx));
         }
@@ -140,7 +140,7 @@ public class TestDb extends AndroidTestCase {
 
     public static ContentValues getAuthorValues() {
 
-        final ContentValues values= new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(AlexandriaContract.AuthorEntry._ID, ean);
         values.put(AlexandriaContract.AuthorEntry.AUTHOR, author);
 
@@ -149,7 +149,7 @@ public class TestDb extends AndroidTestCase {
 
     public static ContentValues getCategoryValues() {
 
-        final ContentValues values= new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(AlexandriaContract.CategoryEntry._ID, ean);
         values.put(AlexandriaContract.CategoryEntry.CATEGORY, category);
 
@@ -158,7 +158,7 @@ public class TestDb extends AndroidTestCase {
 
     public static ContentValues getFullDetailValues() {
 
-        final ContentValues values= new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(AlexandriaContract.BookEntry.TITLE, title);
         values.put(AlexandriaContract.BookEntry.IMAGE_URL, imgUrl);
         values.put(AlexandriaContract.BookEntry.SUBTITLE, subtitle);
@@ -170,7 +170,7 @@ public class TestDb extends AndroidTestCase {
 
     public static ContentValues getFullListValues() {
 
-        final ContentValues values= new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(AlexandriaContract.BookEntry.TITLE, title);
         values.put(AlexandriaContract.BookEntry.IMAGE_URL, imgUrl);
         values.put(AlexandriaContract.AuthorEntry.AUTHOR, author);
