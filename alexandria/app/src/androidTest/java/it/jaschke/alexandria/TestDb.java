@@ -18,12 +18,12 @@ public class TestDb extends AndroidTestCase {
     public static final String LOG_TAG = TestDb.class.getSimpleName();
 
     public final static long ean = 9780137903955L;
-    public final static String title = "Artificial Intelligence";
-    public final static String subtitle = "A Modern Approach";
-    public final static String imgUrl = "http://books.google.com/books/content?id=KI2WQgAACAAJ&printsec=frontcover&img=1&zoom=1";
-    public final static String desc = "Presents a guide to artificial intelligence, covering such topics as intelligent agents, problem-solving, logical agents, planning, uncertainty, learning, and robotics.";
-    public final static String author = "Stuart Jonathan Russell";
-    public final static String category = "Computers";
+    private final static String title = "Artificial Intelligence";
+    private final static String subtitle = "A Modern Approach";
+    private final static String imgUrl = "http://books.google.com/books/content?id=KI2WQgAACAAJ&printsec=frontcover&img=1&zoom=1";
+    private final static String desc = "Presents a guide to artificial intelligence, covering such topics as intelligent agents, problem-solving, logical agents, planning, uncertainty, learning, and robotics.";
+    private final static String author = "Stuart Jonathan Russell";
+    private final static String category = "Computers";
 
     public void testCreateDb() throws Throwable {
         mContext.deleteDatabase(DbHelper.DATABASE_NAME);
@@ -67,7 +67,7 @@ public class TestDb extends AndroidTestCase {
         values = getAuthorValues();
 
 
-        retEan = db.insert(AlexandriaContract.AuthorEntry.TABLE_NAME, null, values);
+        db.insert(AlexandriaContract.AuthorEntry.TABLE_NAME, null, values);
 
         columns = new String[]{
                 AlexandriaContract.AuthorEntry._ID,
@@ -88,7 +88,7 @@ public class TestDb extends AndroidTestCase {
         // test category table
 
         values = getCategoryValues();
-        retEan = db.insert(AlexandriaContract.CategoryEntry.TABLE_NAME, null, values);
+        db.insert(AlexandriaContract.CategoryEntry.TABLE_NAME, null, values);
 
         columns = new String[]{
                 AlexandriaContract.CategoryEntry._ID,

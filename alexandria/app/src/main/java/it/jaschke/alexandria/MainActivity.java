@@ -90,7 +90,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         title = getString(titleId);
     }
 
-    public void restoreActionBar() {
+    @SuppressWarnings("deprecation")
+    private void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);

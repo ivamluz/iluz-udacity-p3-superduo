@@ -29,7 +29,6 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
     private final int LOADER_ID = 10;
     private View mRootView;
     private String mEan;
-    private String mBookTitle;
     private ShareActionProvider mShareActionProvider;
 
     public BookDetail() {
@@ -93,11 +92,15 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
             return;
         }
 
-        mBookTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.TITLE));
+        String mBookTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.TITLE));
         ((TextView) mRootView.findViewById(R.id.fullBookTitle)).setText(mBookTitle);
 
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+
+        // STUDENT NOTE: Due to the following lint warning:
+        // Field requires API level 21 (current min is 15): android.content.Intent#FLAG_ACTIVITY_NEW_DOCUMENT
+        //noinspection deprecation
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("text/plain");
         // STUDENT NOTE: space after sharing text prefix was not respected.
         shareIntent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_text), mBookTitle));

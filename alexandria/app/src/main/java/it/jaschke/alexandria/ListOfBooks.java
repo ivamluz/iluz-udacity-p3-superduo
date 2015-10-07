@@ -21,10 +21,9 @@ import it.jaschke.alexandria.data.AlexandriaContract;
 
 public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private BookListAdapter bookListAdapter;
-    private ListView bookList;
-    private int position = ListView.INVALID_POSITION;
-    private EditText searchText;
+    private BookListAdapter mBookListAdapter;
+    private ListView mBookListView;
+    private EditText mSearchEditText;
 
     private final int LOADER_ID = 10;
 
@@ -48,9 +47,9 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
         );
         // STUDENT NOTE: No need to close the cursor here. It's accomplished by onLoaderReset().
 
-        bookListAdapter = new BookListAdapter(getActivity(), cursor, 0);
+        mBookListAdapter = new BookListAdapter(getActivity(), cursor, 0);
         View rootView = inflater.inflate(R.layout.fragment_list_of_books, container, false);
-        searchText = (EditText) rootView.findViewById(R.id.searchText);
+        mSearchEditText = (EditText) rootView.findViewById(R.id.searchText);
         rootView.findViewById(R.id.searchButton).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -60,14 +59,14 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
                 }
         );
 
-        bookList = (ListView) rootView.findViewById(R.id.listOfBooks);
-        bookList.setAdapter(bookListAdapter);
+        mBookListView = (ListView) rootView.findViewById(R.id.listOfBooks);
+        mBookListView.setAdapter(mBookListAdapter);
 
-        bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mBookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Cursor cursor = bookListAdapter.getCursor();
+                Cursor cursor = mBookListAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
                     ((Callback) getActivity())
                             .onItemSelected(cursor.getString(cursor.getColumnIndex(AlexandriaContract.BookEntry._ID)));
@@ -86,7 +85,7 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         final String selection = AlexandriaContract.BookEntry.TITLE + " LIKE ? OR " + AlexandriaContract.BookEntry.SUBTITLE + " LIKE ? ";
-        String searchString = searchText.getText().toString();
+        String searchString = mSearchEditText.getText().toString();
 
         if (searchString.length() > 0) {
             searchString = "%" + searchString + "%";
@@ -112,15 +111,12 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        bookListAdapter.swapCursor(data);
-        if (position != ListView.INVALID_POSITION) {
-            bookList.smoothScrollToPosition(position);
-        }
+        mBookListAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        bookListAdapter.swapCursor(null);
+        mBookListAdapter.swapCursor(null);
     }
 
     @Override

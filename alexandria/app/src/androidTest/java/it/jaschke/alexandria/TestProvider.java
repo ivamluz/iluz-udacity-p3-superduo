@@ -18,7 +18,7 @@ public class TestProvider extends AndroidTestCase {
         deleteAllRecords();
     }
 
-    public void deleteAllRecords() {
+    private void deleteAllRecords() {
         mContext.getContentResolver().delete(
                 AlexandriaContract.BookEntry.CONTENT_URI,
                 null,
@@ -103,7 +103,7 @@ public class TestProvider extends AndroidTestCase {
         readFullList();
     }
 
-    public void insertReadBook() {
+    private void insertReadBook() {
         ContentValues bookValues = TestDb.getBookValues();
 
         Uri bookUri = mContext.getContentResolver().insert(AlexandriaContract.BookEntry.CONTENT_URI, bookValues);
@@ -132,7 +132,7 @@ public class TestProvider extends AndroidTestCase {
 
     }
 
-    public void insertReadAuthor() {
+    private void insertReadAuthor() {
         ContentValues authorValues = TestDb.getAuthorValues();
 
         Uri authorUri = mContext.getContentResolver().insert(AlexandriaContract.AuthorEntry.CONTENT_URI, authorValues);
@@ -162,7 +162,7 @@ public class TestProvider extends AndroidTestCase {
 
     }
 
-    public void insertReadCategory() {
+    private void insertReadCategory() {
         ContentValues categoryValues = TestDb.getCategoryValues();
 
         Uri categoryUri = mContext.getContentResolver().insert(AlexandriaContract.CategoryEntry.CONTENT_URI, categoryValues);
@@ -192,7 +192,7 @@ public class TestProvider extends AndroidTestCase {
 
     }
 
-    public void readFullBook() {
+    private void readFullBook() {
 
         Cursor cursor = mContext.getContentResolver().query(
                 AlexandriaContract.BookEntry.buildFullBookUri(TestDb.ean),
@@ -205,7 +205,7 @@ public class TestProvider extends AndroidTestCase {
         TestDb.validateCursor(cursor, TestDb.getFullDetailValues());
     }
 
-    public void readFullList() {
+    private void readFullList() {
 
         Cursor cursor = mContext.getContentResolver().query(
                 AlexandriaContract.BookEntry.FULL_CONTENT_URI,

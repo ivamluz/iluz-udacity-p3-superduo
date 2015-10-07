@@ -29,10 +29,10 @@ import it.jaschke.alexandria.services.DownloadImage;
 
 
 public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    public static final String ISBN_PREFIX = "978";
+    private static final String ISBN_PREFIX = "978";
     private static final String LOG_TAG = AddBook.class.getSimpleName();
-    private final int LOADER_ID = 1;
-    private final String EAN_CONTENT = "eanContent";
+    private static final int LOADER_ID = 1;
+    private static final String EAN_CONTENT = "eanContent";
 
     private View mRootView;
     private EditText mEanEditText;

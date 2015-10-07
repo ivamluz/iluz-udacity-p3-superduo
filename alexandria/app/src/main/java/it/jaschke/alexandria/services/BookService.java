@@ -124,7 +124,7 @@ public class BookService extends IntentService {
             urlConnection.connect();
 
             InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder builder = new StringBuilder();
             if (inputStream == null) {
                 return null;
             }
@@ -132,14 +132,15 @@ public class BookService extends IntentService {
             reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line = reader.readLine()) != null) {
-                buffer.append(line);
-                buffer.append("\n");
+                builder.append(line);
+                builder.append("\n");
             }
 
-            if (buffer.length() == 0) {
+            if (builder.length() == 0) {
                 return null;
             }
-            bookJsonString = buffer.toString();
+
+            bookJsonString = builder.toString();
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error ", e);
         } finally {
