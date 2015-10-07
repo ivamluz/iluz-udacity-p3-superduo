@@ -102,6 +102,8 @@
             android:orientation="vertical"
             >
 
+            <!-- STUDENT NOTE: Changed from ImageButton to Button, so we can consistently reference
+             layout items on AddBook class -->
             <Button
                 android:id="@+id/delete_button"
                 style="?android:attr/buttonBarButtonStyle"
