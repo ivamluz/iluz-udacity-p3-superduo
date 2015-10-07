@@ -14,6 +14,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,8 +33,17 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     private static final String LOG_TAG = AddBook.class.getSimpleName();
     private final int LOADER_ID = 1;
     private final String EAN_CONTENT = "eanContent";
-    private EditText ean;
-    private View rootView;
+
+    private View mRootView;
+    private EditText mEanEditText;
+    private Button mScanButton;
+    private Button mSaveButton;
+    private Button mDeleteButton;
+    private TextView mBookTitleTextView;
+    private TextView mBookSubtitleTextView;
+    private TextView mBookAuthorsTextView;
+    private ImageView mBookCoverImageView;
+    private TextView mBookCategoriesTextView;
 
     public AddBook() {
     }
@@ -41,18 +51,35 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (ean != null) {
-            outState.putString(EAN_CONTENT, ean.getText().toString());
+        if (mEanEditText != null) {
+            outState.putString(EAN_CONTENT, mEanEditText.getText().toString());
         }
     }
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mRootView = inflater.inflate(R.layout.fragment_add_book, container, false);
+        cacheViewReferences();
+        initViewComponents(savedInstanceState);
 
-        rootView = inflater.inflate(R.layout.fragment_add_book, container, false);
-        ean = (EditText) rootView.findViewById(R.id.ean);
+        return mRootView;
+    }
 
-        ean.addTextChangedListener(new TextWatcher() {
+    private void cacheViewReferences() {
+        mEanEditText = (EditText) mRootView.findViewById(R.id.ean);
+        mScanButton = (Button) mRootView.findViewById(R.id.scan_button);
+        mSaveButton = (Button) mRootView.findViewById(R.id.save_button);
+        mDeleteButton = (Button) mRootView.findViewById(R.id.delete_button);
+
+        mBookTitleTextView = (TextView) mRootView.findViewById(R.id.bookTitle);
+        mBookSubtitleTextView = (TextView) mRootView.findViewById(R.id.bookSubTitle);
+        mBookAuthorsTextView = (TextView) mRootView.findViewById(R.id.authors);
+        mBookCoverImageView = (ImageView) mRootView.findViewById(R.id.bookCover);
+        mBookCategoriesTextView = (TextView) mRootView.findViewById(R.id.categories);
+    }
+
+    private void initViewComponents(Bundle savedInstanceState) {
+        mEanEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //no need
@@ -83,37 +110,35 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             }
         });
 
-        rootView.findViewById(R.id.scan_button).setOnClickListener(new View.OnClickListener() {
+        mScanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 IntentIntegrator.forSupportFragment(AddBook.this).initiateScan();
             }
         });
 
-        rootView.findViewById(R.id.save_button).setOnClickListener(new View.OnClickListener() {
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ean.setText("");
+                mEanEditText.setText("");
             }
         });
 
-        rootView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent bookIntent = new Intent(getActivity(), BookService.class);
-                bookIntent.putExtra(BookService.EAN, ean.getText().toString());
+                bookIntent.putExtra(BookService.EAN, mEanEditText.getText().toString());
                 bookIntent.setAction(BookService.DELETE_BOOK);
                 getActivity().startService(bookIntent);
-                ean.setText("");
+                mEanEditText.setText("");
             }
         });
 
         if (savedInstanceState != null) {
-            ean.setText(savedInstanceState.getString(EAN_CONTENT));
-            ean.setHint("");
+            mEanEditText.setText(savedInstanceState.getString(EAN_CONTENT));
+            mEanEditText.setHint("");
         }
-
-        return rootView;
     }
 
 
@@ -122,11 +147,11 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             if (result.getContents() == null) {
-                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.scan_cancelled), Toast.LENGTH_LONG).show();
                 Log.d(LOG_TAG, "Scan was cancelled.");
             } else {
                 String barCode = result.getContents();
-                ean.setText(barCode);
+                mEanEditText.setText(barCode);
                 Log.d(LOG_TAG, String.format("Scan completed with code: %s", barCode));
             }
         }
@@ -138,10 +163,10 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
     @Override
     public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if (ean.getText().length() == 0) {
+        if (mEanEditText.getText().length() == 0) {
             return null;
         }
-        String eanStr = ean.getText().toString();
+        String eanStr = mEanEditText.getText().toString();
         if (eanStr.length() == 10 && !eanStr.startsWith(ISBN_PREFIX)) {
             eanStr = ISBN_PREFIX + eanStr;
         }
@@ -162,26 +187,27 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         }
 
         String bookTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.TITLE));
-        ((TextView) rootView.findViewById(R.id.bookTitle)).setText(bookTitle);
+        mBookTitleTextView.setText(bookTitle);
 
         String bookSubTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.SUBTITLE));
-        ((TextView) rootView.findViewById(R.id.bookSubTitle)).setText(bookSubTitle);
+        mBookSubtitleTextView.setText(bookSubTitle);
 
         String authors = data.getString(data.getColumnIndex(AlexandriaContract.AuthorEntry.AUTHOR));
         String[] authorsArr = authors.split(",");
-        ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
-        ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",", "\n"));
+        mBookAuthorsTextView.setLines(authorsArr.length);
+        mBookAuthorsTextView.setText(authors.replace(",", "\n"));
+
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
         if (Patterns.WEB_URL.matcher(imgUrl).matches()) {
-            new DownloadImage((ImageView) rootView.findViewById(R.id.bookCover)).execute(imgUrl);
-            rootView.findViewById(R.id.bookCover).setVisibility(View.VISIBLE);
+            new DownloadImage(mBookCoverImageView).execute(imgUrl);
+            mBookCoverImageView.setVisibility(View.VISIBLE);
         }
 
         String categories = data.getString(data.getColumnIndex(AlexandriaContract.CategoryEntry.CATEGORY));
-        ((TextView) rootView.findViewById(R.id.categories)).setText(categories);
+        mBookCategoriesTextView.setText(categories);
 
-        rootView.findViewById(R.id.save_button).setVisibility(View.VISIBLE);
-        rootView.findViewById(R.id.delete_button).setVisibility(View.VISIBLE);
+        mSaveButton.setVisibility(View.VISIBLE);
+        mDeleteButton.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -190,13 +216,13 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     }
 
     private void clearFields() {
-        ((TextView) rootView.findViewById(R.id.bookTitle)).setText("");
-        ((TextView) rootView.findViewById(R.id.bookSubTitle)).setText("");
-        ((TextView) rootView.findViewById(R.id.authors)).setText("");
-        ((TextView) rootView.findViewById(R.id.categories)).setText("");
-        rootView.findViewById(R.id.bookCover).setVisibility(View.INVISIBLE);
-        rootView.findViewById(R.id.save_button).setVisibility(View.INVISIBLE);
-        rootView.findViewById(R.id.delete_button).setVisibility(View.INVISIBLE);
+        mBookTitleTextView.setText("");
+        mBookSubtitleTextView.setText("");
+        mBookAuthorsTextView.setText("");
+        mBookCategoriesTextView.setText("");
+        mBookCoverImageView.setVisibility(View.INVISIBLE);
+        mSaveButton.setVisibility(View.INVISIBLE);
+        mDeleteButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
