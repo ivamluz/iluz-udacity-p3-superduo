@@ -27,16 +27,12 @@ import it.jaschke.alexandria.data.AlexandriaContract;
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
- * <p/>
  */
 public class BookService extends IntentService {
-
-    private final String LOG_TAG = BookService.class.getSimpleName();
-
     public static final String FETCH_BOOK = "it.jaschke.alexandria.services.action.FETCH_BOOK";
     public static final String DELETE_BOOK = "it.jaschke.alexandria.services.action.DELETE_BOOK";
-
     public static final String EAN = "it.jaschke.alexandria.services.extra.EAN";
+    private static final String LOG_TAG = BookService.class.getSimpleName();
 
     public BookService() {
         super("Alexandria");
@@ -44,38 +40,54 @@ public class BookService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (FETCH_BOOK.equals(action)) {
-                final String ean = intent.getStringExtra(EAN);
-                fetchBook(ean);
-            } else if (DELETE_BOOK.equals(action)) {
-                final String ean = intent.getStringExtra(EAN);
-                deleteBook(ean);
-            }
-        }
-    }
-
-    /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
-     */
-    private void deleteBook(String ean) {
-        if (ean != null) {
-            getContentResolver().delete(AlexandriaContract.BookEntry.buildBookUri(Long.parseLong(ean)), null, null);
-        }
-    }
-
-    /**
-     * Handle action fetchBook in the provided background thread with the provided
-     * parameters.
-     */
-    private void fetchBook(String ean) {
-
-        if (ean.length() != 13) {
+        if (intent == null) {
             return;
         }
 
+        final String action = intent.getAction();
+        if (FETCH_BOOK.equals(action)) {
+            final String ean = intent.getStringExtra(EAN);
+            fetchBook(ean);
+        } else if (DELETE_BOOK.equals(action)) {
+            final String ean = intent.getStringExtra(EAN);
+            deleteBook(ean);
+        }
+    }
+
+    /**
+     * Handle action DELETE_BOOK in the provided background thread with the provided
+     * parameters.
+     */
+    private void deleteBook(String ean) {
+        if (ean == null) {
+            return;
+        }
+        getContentResolver().delete(AlexandriaContract.BookEntry.buildBookUri(Long.parseLong(ean)), null, null);
+    }
+
+    /**
+     * Handle action FETCH_BOOK in the provided background thread with the provided
+     * parameters.
+     * STUDENT NOTE: This method has been split into smaller ones.
+     */
+    private void fetchBook(String ean) {
+        if (!isValidEan(ean)) {
+            return;
+        }
+
+        if (isEanRegistered(ean)) {
+            return;
+        }
+
+        String bookJsonString = queryEanOnGoogleBooks(ean);
+        parseAndPersistBookInfo(ean, bookJsonString);
+    }
+
+    private boolean isValidEan(String ean) {
+        return (ean.length() == 13);
+    }
+
+    private boolean isEanRegistered(String ean) {
         Cursor bookEntry = getContentResolver().query(
                 AlexandriaContract.BookEntry.buildBookUri(Long.parseLong(ean)),
                 null, // leaving "columns" null just returns all the columns.
@@ -84,13 +96,13 @@ public class BookService extends IntentService {
                 null  // sort order
         );
 
-        if (bookEntry.getCount() > 0) {
-            bookEntry.close();
-            return;
-        }
-
+        boolean isEanRegistered = (bookEntry.getCount() > 0);
         bookEntry.close();
 
+        return isEanRegistered;
+    }
+
+    private String queryEanOnGoogleBooks(String ean) {
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String bookJsonString = null;
@@ -114,7 +126,7 @@ public class BookService extends IntentService {
             InputStream inputStream = urlConnection.getInputStream();
             StringBuffer buffer = new StringBuffer();
             if (inputStream == null) {
-                return;
+                return null;
             }
 
             reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -125,7 +137,7 @@ public class BookService extends IntentService {
             }
 
             if (buffer.length() == 0) {
-                return;
+                return null;
             }
             bookJsonString = buffer.toString();
         } catch (Exception e) {
@@ -141,9 +153,12 @@ public class BookService extends IntentService {
                     Log.e(LOG_TAG, "Error closing stream", e);
                 }
             }
-
         }
 
+        return bookJsonString;
+    }
+
+    private void parseAndPersistBookInfo(String ean, String bookJsonString) {
         final String ITEMS = "items";
 
         final String VOLUME_INFO = "volumeInfo";
@@ -165,6 +180,7 @@ public class BookService extends IntentService {
                 Intent messageIntent = new Intent(MainActivity.MESSAGE_EVENT);
                 messageIntent.putExtra(MainActivity.MESSAGE_KEY, getResources().getString(R.string.not_found));
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(messageIntent);
+
                 return;
             }
 
