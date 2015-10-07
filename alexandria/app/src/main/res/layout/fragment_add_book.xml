@@ -50,7 +50,8 @@
             android:paddingRight="20dp"
             android:textIsSelectable="true"
             android:textSize="@dimen/head_line"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            tools:text="Book Title"/>
 
         <TextView
             android:id="@+id/bookSubTitle"
@@ -61,6 +62,7 @@
             android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:maxLines="3"
+            tools:text="Book Subtitle"
             />
 
         <TextView
@@ -73,6 +75,7 @@
             android:layout_marginTop="20dp"
             android:gravity="end"
             android:textSize="@dimen/small_fontsize"
+            tools:text="Author 1\nAuthor 2\nAuthor 3"
             />
 
         <ImageView
@@ -82,7 +85,9 @@
             android:layout_alignLeft="@+id/eancontainer"
             android:layout_alignStart="@+id/eancontainer"
             android:layout_alignTop="@+id/authors"
-            android:contentDescription="@string/book_cover"/>
+            android:contentDescription="@string/book_cover"
+            android:src="@android:drawable/picture_frame"
+            />
 
         <TextView
             android:id="@+id/categories"
@@ -92,7 +97,8 @@
             android:layout_alignStart="@+id/eancontainer"
             android:layout_below="@+id/bookCover"
             android:layout_marginTop="20dp"
-            android:textSize="@dimen/small_fontsize"/>
+            android:textSize="@dimen/small_fontsize"
+            tools:text="Category 1\nCategory 2\nCategory 3"/>
 
         <LinearLayout
             android:layout_width="fill_parent"
