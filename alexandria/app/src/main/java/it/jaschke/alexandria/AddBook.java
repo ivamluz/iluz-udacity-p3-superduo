@@ -1,7 +1,6 @@
 package it.jaschke.alexandria;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,20 +19,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
 import it.jaschke.alexandria.services.DownloadImage;
 
 
 public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String TAG = "INTENT_TO_SCAN_ACTIVITY";
-    private EditText ean;
-    private final int LOADER_ID = 1;
-    private View rootView;
-    private final String EAN_CONTENT = "eanContent";
+    public static final String ISBN_PREFIX = "978";
+    private static final String LOG_TAG = AddBook.class.getSimpleName();
     private static final String SCAN_FORMAT = "scanFormat";
     private static final String SCAN_CONTENTS = "scanContents";
-
+    private final int LOADER_ID = 1;
+    private final String EAN_CONTENT = "eanContent";
+    private EditText ean;
+    private View rootView;
     private String mScanFormat = "Format:";
     private String mScanContents = "Contents:";
 
@@ -69,8 +72,8 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             public void afterTextChanged(Editable s) {
                 String ean = s.toString();
                 //catch isbn10 numbers
-                if (ean.length() == 10 && !ean.startsWith("978")) {
-                    ean = "978" + ean;
+                if (ean.length() == 10 && !ean.startsWith(ISBN_PREFIX)) {
+                    ean = ISBN_PREFIX + ean;
                 }
                 if (ean.length() < 13) {
                     clearFields();
@@ -88,19 +91,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         rootView.findViewById(R.id.scan_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // This is the callback method that the system will invoke when your button is
-                // clicked. You might do this by launching another app or by including the
-                //functionality directly in this app.
-                // Hint: Use a Try/Catch block to handle the Intent dispatch gracefully, if you
-                // are using an external app.
-                //when you're done, remove the toast below.
-                Context context = getActivity();
-                CharSequence text = "This button should let you scan a book for its barcode!";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-
+                IntentIntegrator.forSupportFragment(AddBook.this).initiateScan();
             }
         });
 
@@ -130,6 +121,22 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         return rootView;
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null) {
+                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+                Log.d(LOG_TAG, "Scan was cancelled.");
+            } else {
+                String barCode = result.getContents();
+                ean.setText(barCode);
+                Log.d(LOG_TAG, String.format("Scan completed with code: %s", barCode));
+            }
+        }
+    }
+
     private void restartLoader() {
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
@@ -140,8 +147,8 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             return null;
         }
         String eanStr = ean.getText().toString();
-        if (eanStr.length() == 10 && !eanStr.startsWith("978")) {
-            eanStr = "978" + eanStr;
+        if (eanStr.length() == 10 && !eanStr.startsWith(ISBN_PREFIX)) {
+            eanStr = ISBN_PREFIX + eanStr;
         }
         return new CursorLoader(
                 getActivity(),
