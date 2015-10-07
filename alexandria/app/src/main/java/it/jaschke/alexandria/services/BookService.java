@@ -196,7 +196,7 @@ public class BookService extends IntentService {
                 writeBackCategories(ean, bookInfo.getJSONArray(CATEGORIES));
             }
 
-        } catch (JSONException e) {
+        } catch (JSONException | NullPointerException e) {
             Log.e(LOG_TAG, "Error ", e);
         }
     }
