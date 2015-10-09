@@ -45,9 +45,6 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     private ImageView mBookCoverImageView;
     private TextView mBookCategoriesTextView;
 
-    public AddBook() {
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

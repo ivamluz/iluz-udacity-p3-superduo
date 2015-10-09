@@ -27,9 +27,6 @@ public class BookProvider extends ContentProvider {
     private static final int BOOK_FULLDETAIL = 501;
 
     private static final UriMatcher uriMatcher = buildUriMatcher();
-
-    private DbHelper dbHelper;
-
     private static final SQLiteQueryBuilder bookFull;
 
     static {
@@ -40,6 +37,7 @@ public class BookProvider extends ContentProvider {
                         " LEFT OUTER JOIN " + AlexandriaContract.CategoryEntry.TABLE_NAME + " USING (" + AlexandriaContract.BookEntry._ID + ")");
     }
 
+    private DbHelper dbHelper;
 
     private static UriMatcher buildUriMatcher() {
 
@@ -64,7 +62,6 @@ public class BookProvider extends ContentProvider {
     public boolean onCreate() {
         dbHelper = new DbHelper(getContext());
         return true;
-
     }
 
     @Override
@@ -178,7 +175,6 @@ public class BookProvider extends ContentProvider {
         return retCursor;
     }
 
-
     @Override
     public String getType(Uri uri) {
         final int match = uriMatcher.match(uri);
@@ -268,10 +264,12 @@ public class BookProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+
         // Because a null deletes all rows
         if (selection == null || rowsDeleted != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
+
         return rowsDeleted;
     }
 
@@ -297,9 +295,11 @@ public class BookProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+
         if (rowsUpdated != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
+
         return rowsUpdated;
     }
 }

@@ -9,11 +9,6 @@ import android.view.ViewGroup;
 
 
 public class About extends Fragment {
-
-    public About() {
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -25,5 +20,4 @@ public class About extends Fragment {
         super.onAttach(activity);
         activity.setTitle(R.string.about);
     }
-
 }
