@@ -31,9 +31,6 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
     private String mEan;
     private ShareActionProvider mShareActionProvider;
 
-    public BookDetail() {
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

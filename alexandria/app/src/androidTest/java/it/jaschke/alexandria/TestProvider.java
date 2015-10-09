@@ -12,8 +12,6 @@ import it.jaschke.alexandria.data.AlexandriaContract;
  * Created by saj on 23/12/14.
  */
 public class TestProvider extends AndroidTestCase {
-    public static final String LOG_TAG = TestProvider.class.getSimpleName();
-
     public void setUp() {
         deleteAllRecords();
     }

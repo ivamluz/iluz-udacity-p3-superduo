@@ -15,8 +15,6 @@ import it.jaschke.alexandria.data.DbHelper;
  * Created by saj on 23/12/14.
  */
 public class TestDb extends AndroidTestCase {
-    public static final String LOG_TAG = TestDb.class.getSimpleName();
-
     public final static long ean = 9780137903955L;
     private final static String title = "Artificial Intelligence";
     private final static String subtitle = "A Modern Approach";
@@ -34,7 +32,6 @@ public class TestDb extends AndroidTestCase {
     }
 
     public void testInsertReadDb() {
-
         DbHelper dbHelper = new DbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -65,7 +62,6 @@ public class TestDb extends AndroidTestCase {
         validateCursor(cursor, values);
 
         values = getAuthorValues();
-
 
         db.insert(AlexandriaContract.AuthorEntry.TABLE_NAME, null, values);
 
@@ -108,11 +104,9 @@ public class TestDb extends AndroidTestCase {
         validateCursor(cursor, values);
 
         dbHelper.close();
-
     }
 
     static void validateCursor(Cursor valueCursor, ContentValues expectedValues) {
-
         assertTrue(valueCursor.moveToFirst());
 
         Set<Map.Entry<String, Object>> valueSet = expectedValues.valueSet();
@@ -127,7 +121,6 @@ public class TestDb extends AndroidTestCase {
     }
 
     public static ContentValues getBookValues() {
-
         final ContentValues values = new ContentValues();
         values.put(AlexandriaContract.BookEntry._ID, ean);
         values.put(AlexandriaContract.BookEntry.TITLE, title);
@@ -139,7 +132,6 @@ public class TestDb extends AndroidTestCase {
     }
 
     public static ContentValues getAuthorValues() {
-
         final ContentValues values = new ContentValues();
         values.put(AlexandriaContract.AuthorEntry._ID, ean);
         values.put(AlexandriaContract.AuthorEntry.AUTHOR, author);
@@ -157,7 +149,6 @@ public class TestDb extends AndroidTestCase {
     }
 
     public static ContentValues getFullDetailValues() {
-
         final ContentValues values = new ContentValues();
         values.put(AlexandriaContract.BookEntry.TITLE, title);
         values.put(AlexandriaContract.BookEntry.IMAGE_URL, imgUrl);
@@ -165,16 +156,17 @@ public class TestDb extends AndroidTestCase {
         values.put(AlexandriaContract.BookEntry.DESC, desc);
         values.put(AlexandriaContract.AuthorEntry.AUTHOR, author);
         values.put(AlexandriaContract.CategoryEntry.CATEGORY, category);
+
         return values;
     }
 
     public static ContentValues getFullListValues() {
-
         final ContentValues values = new ContentValues();
         values.put(AlexandriaContract.BookEntry.TITLE, title);
         values.put(AlexandriaContract.BookEntry.IMAGE_URL, imgUrl);
         values.put(AlexandriaContract.AuthorEntry.AUTHOR, author);
         values.put(AlexandriaContract.CategoryEntry.CATEGORY, category);
+
         return values;
     }
 }
