@@ -18,18 +18,32 @@
             android:layout_gravity="center_horizontal|top"
             android:orientation="horizontal">
 
+            <ImageButton
+                android:id="@+id/backButton"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="right|top"
+                android:contentDescription="@string/back_button"
+                android:onClick="goBack"
+                android:src="@drawable/ic_action_undo"/>
+
             <TextView
                 android:id="@+id/fullBookTitle"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_margin="10dp"
-                android:paddingRight="20dp"
+                android:layout_toLeftOf="@+id/backButton"
                 android:textIsSelectable="true"
                 android:textSize="@dimen/head_line"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit"/>
 
             <ImageView
                 android:id="@+id/fullBookCover"
@@ -64,7 +78,6 @@
                 android:ellipsize="end"
                 />
 
-
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -88,19 +101,6 @@
                     android:gravity="right|top"
                     android:textStyle="bold"/>
             </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/backButton"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/fullBookTitle"
-                android:layout_alignParentTop="true"
-                android:layout_alignRight="@+id/fullBookTitle"
-                android:layout_gravity="right|top"
-                android:contentDescription="@string/back_button"
-                android:onClick="goBack"
-                android:src="@drawable/ic_action_undo"/>
         </RelativeLayout>
     </ScrollView>
 
