@@ -75,7 +75,8 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
             }
         });
 
-
+        // STUDENT NOTE: If there is a search term available, we populate the list using this
+        // same term.
         if (savedInstanceState != null) {
             String searchTerm = savedInstanceState.getString(BUNDLE_KEY_SEARCH_TERM);
             if (searchTerm != null && ! "".equals(searchTerm)) {
@@ -135,12 +136,14 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
         activity.setTitle(R.string.books);
     }
 
+    // STUDENT NOTE: Save the query, so we are able to keep list state after device rotation.
     @Override
     public void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
         bundle.putString(BUNDLE_KEY_SEARCH_TERM, mSearchEditText.getText().toString());
     }
 
+    // STUDENT NOTE: Make sure list gets after refreshed when a book is deleted, for example.
     @Override
     public void onResume() {
         super.onResume();
