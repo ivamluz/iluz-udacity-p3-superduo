@@ -31,7 +31,10 @@
         android:layout_toLeftOf="@+id/searchButton"
         android:layout_toStartOf="@+id/searchButton"
         android:inputType="text"
-        android:saveEnabled="true"/>
+        android:saveEnabled="true"
+        android:imeOptions="actionSearch"
+        android:maxLines="1"
+        android:minLines="1"/>
 
     <ListView
         android:id="@+id/listOfBooks"

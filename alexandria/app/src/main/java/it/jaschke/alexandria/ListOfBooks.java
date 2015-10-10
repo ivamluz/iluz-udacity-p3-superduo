@@ -1,20 +1,24 @@
 package it.jaschke.alexandria;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-
-import com.google.zxing.common.StringUtils;
+import android.widget.TextView;
 
 import it.jaschke.alexandria.api.BookListAdapter;
 import it.jaschke.alexandria.api.Callback;
@@ -24,11 +28,10 @@ import it.jaschke.alexandria.data.AlexandriaContract;
 public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String BUNDLE_KEY_SEARCH_TERM = "books_list_search_term";
+    private final int LOADER_ID = 10;
     private BookListAdapter mBookListAdapter;
     private ListView mBookListView;
     private EditText mSearchEditText;
-
-    private final int LOADER_ID = 10;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,24 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
 
         mBookListAdapter = new BookListAdapter(getActivity(), cursor, 0);
         View rootView = inflater.inflate(R.layout.fragment_list_of_books, container, false);
+
         mSearchEditText = (EditText) rootView.findViewById(R.id.searchText);
+        mSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView field, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    String searchTerms = field.getText().toString();
+                    restartLoader();
+
+                    hideSoftKeyboard(field.getWindowToken());
+
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+
         rootView.findViewById(R.id.searchButton).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -79,13 +99,19 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
         // same term.
         if (savedInstanceState != null) {
             String searchTerm = savedInstanceState.getString(BUNDLE_KEY_SEARCH_TERM);
-            if (searchTerm != null && ! "".equals(searchTerm)) {
+            if (searchTerm != null && !"".equals(searchTerm)) {
                 mSearchEditText.setText(searchTerm);
                 restartLoader();
             }
         }
 
         return rootView;
+    }
+
+    private void hideSoftKeyboard(IBinder windowToken) {
+        InputMethodManager imm =
+                (InputMethodManager) getActivity().getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(windowToken, 0);
     }
 
     private void restartLoader() {
