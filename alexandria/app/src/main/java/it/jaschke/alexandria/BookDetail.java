@@ -111,9 +111,13 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         ((TextView) mRootView.findViewById(R.id.fullBookDesc)).setText(desc);
 
         String authors = data.getString(data.getColumnIndex(AlexandriaContract.AuthorEntry.AUTHOR));
-        String[] authorsArr = authors.split(",");
-        ((TextView) mRootView.findViewById(R.id.authors)).setLines(authorsArr.length);
-        ((TextView) mRootView.findViewById(R.id.authors)).setText(authors.replace(",", "\n"));
+        // STUDENT NOTE: authors info is not always available, so we have to protect against
+        // NullPointerException: https://www.googleapis.com/books/v1/volumes?q=isbn:9781622540495
+        if (authors != null) {
+            String[] authorsArr = authors.split(",");
+            ((TextView) mRootView.findViewById(R.id.authors)).setLines(authorsArr.length);
+            ((TextView) mRootView.findViewById(R.id.authors)).setText(authors.replace(",", "\n"));
+        }
 
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
         if (Patterns.WEB_URL.matcher(imgUrl).matches()) {

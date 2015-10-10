@@ -189,10 +189,17 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         String bookSubTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.SUBTITLE));
         mBookSubtitleTextView.setText(bookSubTitle);
 
+        // STUDENT NOTE: authors attribute is not always available, so we have to protect against
+        // NullPointerException: https://www.googleapis.com/books/v1/volumes?q=isbn:9781622540495
         String authors = data.getString(data.getColumnIndex(AlexandriaContract.AuthorEntry.AUTHOR));
-        String[] authorsArr = authors.split(",");
-        mBookAuthorsTextView.setLines(authorsArr.length);
-        mBookAuthorsTextView.setText(authors.replace(",", "\n"));
+        if (authors != null) {
+            String[] authorsArr = authors.split(",");
+            mBookAuthorsTextView.setLines(authorsArr.length);
+            mBookAuthorsTextView.setText(authors.replace(",", "\n"));
+        } else {
+            mBookAuthorsTextView.setLines(0);
+            mBookAuthorsTextView.setText(null);
+        }
 
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
         if (Patterns.WEB_URL.matcher(imgUrl).matches()) {
