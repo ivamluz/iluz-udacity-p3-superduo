@@ -100,6 +100,7 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
         );
     }
 
+    // STUDENT NOTE: Usability. Implement search triggering through soft keyboard.
     private void initSearchEditText() {
         mSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -114,6 +115,18 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
                     handled = true;
                 }
                 return handled;
+            }
+        });
+
+        // STUDENT NOTE: keyboard was kept open when user was seeing the book list, focused on the
+        // search field (making keyboard appear) and clicking a book.
+        mSearchEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                // http://stackoverflow.com/questions/15412943/hide-soft-keyboard-on-losing-focus
+                if (view.getId() == mSearchEditText.getId() && !hasFocus) {
+                    hideSoftKeyboard(view.getWindowToken());
+                }
             }
         });
     }
