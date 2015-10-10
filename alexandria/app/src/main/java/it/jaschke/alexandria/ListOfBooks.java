@@ -140,4 +140,10 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
         super.onSaveInstanceState(bundle);
         bundle.putString(BUNDLE_KEY_SEARCH_TERM, mSearchEditText.getText().toString());
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        restartLoader();
+    }
 }
