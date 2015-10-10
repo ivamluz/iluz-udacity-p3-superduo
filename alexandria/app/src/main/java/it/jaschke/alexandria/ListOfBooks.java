@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.zxing.common.StringUtils;
+
 import it.jaschke.alexandria.api.BookListAdapter;
 import it.jaschke.alexandria.api.Callback;
 import it.jaschke.alexandria.data.AlexandriaContract;
@@ -21,11 +23,18 @@ import it.jaschke.alexandria.data.AlexandriaContract;
 
 public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final String BUNDLE_KEY_SEARCH_TERM = "books_list_search_term";
     private BookListAdapter mBookListAdapter;
     private ListView mBookListView;
     private EditText mSearchEditText;
 
     private final int LOADER_ID = 10;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +74,15 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
                 }
             }
         });
+
+
+        if (savedInstanceState != null) {
+            String searchTerm = savedInstanceState.getString(BUNDLE_KEY_SEARCH_TERM);
+            if (searchTerm != null && ! "".equals(searchTerm)) {
+                mSearchEditText.setText(searchTerm);
+                restartLoader();
+            }
+        }
 
         return rootView;
     }
@@ -115,5 +133,11 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         activity.setTitle(R.string.books);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        bundle.putString(BUNDLE_KEY_SEARCH_TERM, mSearchEditText.getText().toString());
     }
 }
