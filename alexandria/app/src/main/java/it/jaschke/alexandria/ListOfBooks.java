@@ -17,6 +17,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,9 +30,12 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
 
     private static final String BUNDLE_KEY_SEARCH_TERM = "books_list_search_term";
     private final int LOADER_ID = 10;
+    private View mRootView;
     private BookListAdapter mBookListAdapter;
-    private ListView mBookListView;
+
     private EditText mSearchEditText;
+    private ImageButton mSearchButton;
+    private ListView mBookListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,9 +43,29 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
         setRetainInstance(true);
     }
 
+    private void cacheViewReferences() {
+        mSearchEditText = (EditText) mRootView.findViewById(R.id.searchText);
+        mSearchButton = (ImageButton) mRootView.findViewById(R.id.searchButton);
+        mBookListView = (ListView) mRootView.findViewById(R.id.listOfBooks);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mRootView = inflater.inflate(R.layout.fragment_list_of_books, container, false);
 
+        cacheViewReferences();
+        initViewComponents();
+
+        return mRootView;
+    }
+
+    private void initViewComponents() {
+        initSearchEditText();
+        initSearchButton();
+        initBooksListView();
+    }
+
+    private void initBooksListView() {
         Cursor cursor = getActivity().getContentResolver().query(
                 AlexandriaContract.BookEntry.CONTENT_URI,
                 null, // leaving "columns" null just returns all the columns.
@@ -52,9 +76,31 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
         // STUDENT NOTE: No need to close the cursor here. It's accomplished by onLoaderReset().
 
         mBookListAdapter = new BookListAdapter(getActivity(), cursor, 0);
-        View rootView = inflater.inflate(R.layout.fragment_list_of_books, container, false);
+        mBookListView.setAdapter(mBookListAdapter);
+        mBookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Cursor cursor = mBookListAdapter.getCursor();
+                if (cursor != null && cursor.moveToPosition(position)) {
+                    ((Callback) getActivity())
+                            .onItemSelected(cursor.getString(cursor.getColumnIndex(AlexandriaContract.BookEntry._ID)));
+                }
+            }
+        });
+    }
 
-        mSearchEditText = (EditText) rootView.findViewById(R.id.searchText);
+    private void initSearchButton() {
+        mSearchButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ListOfBooks.this.restartLoader();
+                    }
+                }
+        );
+    }
+
+    private void initSearchEditText() {
         mSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView field, int actionId, KeyEvent event) {
@@ -70,42 +116,6 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
                 return handled;
             }
         });
-
-        rootView.findViewById(R.id.searchButton).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ListOfBooks.this.restartLoader();
-                    }
-                }
-        );
-
-        mBookListView = (ListView) rootView.findViewById(R.id.listOfBooks);
-        mBookListView.setAdapter(mBookListAdapter);
-
-        mBookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Cursor cursor = mBookListAdapter.getCursor();
-                if (cursor != null && cursor.moveToPosition(position)) {
-                    ((Callback) getActivity())
-                            .onItemSelected(cursor.getString(cursor.getColumnIndex(AlexandriaContract.BookEntry._ID)));
-                }
-            }
-        });
-
-        // STUDENT NOTE: If there is a search term available, we populate the list using this
-        // same term.
-        if (savedInstanceState != null) {
-            String searchTerm = savedInstanceState.getString(BUNDLE_KEY_SEARCH_TERM);
-            if (searchTerm != null && !"".equals(searchTerm)) {
-                mSearchEditText.setText(searchTerm);
-                restartLoader();
-            }
-        }
-
-        return rootView;
     }
 
     private void hideSoftKeyboard(IBinder windowToken) {
@@ -167,6 +177,18 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
     public void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
         bundle.putString(BUNDLE_KEY_SEARCH_TERM, mSearchEditText.getText().toString());
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            String searchTerm = savedInstanceState.getString(BUNDLE_KEY_SEARCH_TERM);
+            if (searchTerm != null && !"".equals(searchTerm)) {
+                mSearchEditText.setText(searchTerm);
+                restartLoader();
+            }
+        }
     }
 
     // STUDENT NOTE: Make sure list gets after refreshed when a book is deleted, for example.
