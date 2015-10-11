@@ -99,7 +99,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         actionBar.setTitle(title);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!navigationDrawerFragment.isDrawerOpen()) {
@@ -150,7 +149,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                 .replace(id, fragment)
                 .addToBackStack("Book Detail")
                 .commit();
-
     }
 
     private class MessageReceiver extends BroadcastReceiver {
@@ -179,6 +177,4 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
         super.onBackPressed();
     }
-
-
 }

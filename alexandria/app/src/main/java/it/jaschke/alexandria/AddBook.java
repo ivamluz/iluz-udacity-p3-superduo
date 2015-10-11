@@ -102,9 +102,11 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                 }
 
                 if (!isNetworkAvailable()) {
-                    Toast.makeText(getActivity(), "Not connected to internet.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.internet_unavailable), Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                showProgressBar();
 
                 //Once we have an ISBN, start a book intent
                 Intent bookIntent = new Intent(getActivity(), BookService.class);
@@ -144,6 +146,18 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             mEanEditText.setText(savedInstanceState.getString(EAN_CONTENT));
             mEanEditText.setHint("");
         }
+    }
+
+    private void showProgressBar() {
+        setProgressBarVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressBar() {
+        setProgressBarVisibility(View.GONE);
+    }
+
+    private void setProgressBarVisibility(int visibility) {
+        mRootView.findViewById(R.id.search_progress_bar).setVisibility(visibility);
     }
 
 
@@ -195,6 +209,8 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor data) {
+        hideProgressBar();
+
         if (!data.moveToFirst()) {
             return;
         }

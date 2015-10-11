@@ -28,4 +28,5 @@
     <string name="about_text">This application gets book information from a Google API. All titles, cover images, and author information come from there.\n\nThe original version of this app was built by Sascha Jaschke, and modified by Ivam Luz in the Udacity Android Nanodegree program.</string>
 
     <string name="scan_cancelled">Cancelled</string>
+    <string name="internet_unavailable">Not connected to internet.</string>
 </resources>
