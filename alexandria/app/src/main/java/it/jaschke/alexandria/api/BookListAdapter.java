@@ -10,28 +10,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import it.jaschke.alexandria.R;
 import it.jaschke.alexandria.data.AlexandriaContract;
-import it.jaschke.alexandria.services.DownloadImage;
 
 /**
  * Created by saj on 11/01/15.
  */
 public class BookListAdapter extends CursorAdapter {
-
-
-    public static class ViewHolder {
-        public final ImageView bookCover;
-        public final TextView bookTitle;
-        public final TextView bookSubTitle;
-
-        public ViewHolder(View view) {
-            bookCover = (ImageView) view.findViewById(R.id.fullBookCover);
-            bookTitle = (TextView) view.findViewById(R.id.listBookTitle);
-            bookSubTitle = (TextView) view.findViewById(R.id.listBookSubTitle);
-        }
-    }
-
     public BookListAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
@@ -41,8 +28,13 @@ public class BookListAdapter extends CursorAdapter {
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
+        // STUDENT NOTE: Replace DownloadImage by Picasso, so we have placeholders for the book covers.
         String imgUrl = cursor.getString(cursor.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
-        new DownloadImage(viewHolder.bookCover).execute(imgUrl);
+        if (imgUrl == null || "".equals(imgUrl)) {
+            Picasso.with(context).load(R.drawable.ic_launcher).into(viewHolder.bookCover);
+        } else {
+            Picasso.with(context).load(imgUrl).placeholder(R.drawable.ic_launcher).into(viewHolder.bookCover);
+        }
 
         String bookTitle = cursor.getString(cursor.getColumnIndex(AlexandriaContract.BookEntry.TITLE));
         viewHolder.bookTitle.setText(bookTitle);
@@ -59,5 +51,17 @@ public class BookListAdapter extends CursorAdapter {
         view.setTag(viewHolder);
 
         return view;
+    }
+
+    public static class ViewHolder {
+        public final ImageView bookCover;
+        public final TextView bookTitle;
+        public final TextView bookSubTitle;
+
+        public ViewHolder(View view) {
+            bookCover = (ImageView) view.findViewById(R.id.fullBookCover);
+            bookTitle = (TextView) view.findViewById(R.id.listBookTitle);
+            bookSubTitle = (TextView) view.findViewById(R.id.listBookSubTitle);
+        }
     }
 }

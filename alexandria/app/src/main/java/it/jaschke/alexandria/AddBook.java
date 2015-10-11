@@ -13,7 +13,6 @@ import android.support.v4.content.CursorLoader;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +24,10 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.squareup.picasso.Picasso;
 
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
-import it.jaschke.alexandria.services.DownloadImage;
 
 
 public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -156,7 +155,6 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -219,10 +217,13 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             mBookAuthorsTextView.setText(null);
         }
 
+        // STUDENT NOTE: Replace DownloadImage by Picasso.
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
-        if (Patterns.WEB_URL.matcher(imgUrl).matches()) {
-            new DownloadImage(mBookCoverImageView).execute(imgUrl);
-            mBookCoverImageView.setVisibility(View.VISIBLE);
+        mBookCoverImageView.setVisibility(View.VISIBLE);
+        if (imgUrl == null || "".equals(imgUrl)) {
+            Picasso.with(getActivity()).load(R.drawable.ic_launcher).into(mBookCoverImageView);
+        } else {
+            Picasso.with(getActivity()).load(imgUrl).placeholder(R.drawable.ic_launcher).into(mBookCoverImageView);
         }
 
         String categories = data.getString(data.getColumnIndex(AlexandriaContract.CategoryEntry.CATEGORY));

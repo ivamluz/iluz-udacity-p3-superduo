@@ -8,7 +8,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,9 +17,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
-import it.jaschke.alexandria.services.DownloadImage;
 
 
 public class BookDetail extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -119,10 +119,13 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
             ((TextView) mRootView.findViewById(R.id.authors)).setText(authors.replace(",", "\n"));
         }
 
+        // STUDENT NOTE: Replace DownloadImage by Picasso, so we have placeholders for the book covers.
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
-        if (Patterns.WEB_URL.matcher(imgUrl).matches()) {
-            new DownloadImage((ImageView) mRootView.findViewById(R.id.fullBookCover)).execute(imgUrl);
-            mRootView.findViewById(R.id.fullBookCover).setVisibility(View.VISIBLE);
+        ImageView bookCover = (ImageView) mRootView.findViewById(R.id.fullBookCover);
+        if (imgUrl == null || "".equals(imgUrl)) {
+            Picasso.with(getActivity()).load(R.drawable.ic_launcher).into(bookCover);
+        } else {
+            Picasso.with(getActivity()).load(imgUrl).placeholder(R.drawable.ic_launcher).into(bookCover);
         }
 
         String categories = data.getString(data.getColumnIndex(AlexandriaContract.CategoryEntry.CATEGORY));
