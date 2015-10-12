@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
+import it.jaschke.alexandria.utils.SoftKeyboardUtils;
 
 
 public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -210,6 +211,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor data) {
         hideProgressBar();
+        SoftKeyboardUtils.hideSoftKeyboard(getActivity(), mRootView.getWindowToken());
 
         if (!data.moveToFirst()) {
             return;

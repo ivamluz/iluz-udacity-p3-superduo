@@ -24,6 +24,7 @@ import android.widget.TextView;
 import it.jaschke.alexandria.api.BookListAdapter;
 import it.jaschke.alexandria.api.Callback;
 import it.jaschke.alexandria.data.AlexandriaContract;
+import it.jaschke.alexandria.utils.SoftKeyboardUtils;
 
 
 public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -107,10 +108,8 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
             public boolean onEditorAction(TextView field, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    String searchTerms = field.getText().toString();
                     restartLoader();
-
-                    hideSoftKeyboard(field.getWindowToken());
+                    SoftKeyboardUtils.hideSoftKeyboard(getActivity(), field.getWindowToken());
 
                     handled = true;
                 }
@@ -125,16 +124,10 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
             public void onFocusChange(View view, boolean hasFocus) {
                 // http://stackoverflow.com/questions/15412943/hide-soft-keyboard-on-losing-focus
                 if (view.getId() == mSearchEditText.getId() && !hasFocus) {
-                    hideSoftKeyboard(view.getWindowToken());
+                    SoftKeyboardUtils.hideSoftKeyboard(getActivity(), view.getWindowToken());
                 }
             }
         });
-    }
-
-    private void hideSoftKeyboard(IBinder windowToken) {
-        InputMethodManager imm =
-                (InputMethodManager) getActivity().getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(windowToken, 0);
     }
 
     private void restartLoader() {
