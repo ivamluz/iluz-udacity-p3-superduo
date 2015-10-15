@@ -34,7 +34,6 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
         setHasOptionsMenu(true);
     }
 
@@ -93,16 +92,18 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         String mBookTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.TITLE));
         ((TextView) mRootView.findViewById(R.id.fullBookTitle)).setText(mBookTitle);
 
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        if (mShareActionProvider != null) {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
 
-        // STUDENT NOTE: Due to the following lint warning:
-        // Field requires API level 21 (current min is 15): android.content.Intent#FLAG_ACTIVITY_NEW_DOCUMENT
-        //noinspection deprecation
-        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        shareIntent.setType("text/plain");
-        // STUDENT NOTE: space after sharing text prefix was not respected.
-        shareIntent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_text), mBookTitle));
-        mShareActionProvider.setShareIntent(shareIntent);
+            // STUDENT NOTE: Due to the following lint warning:
+            // Field requires API level 21 (current min is 15): android.content.Intent#FLAG_ACTIVITY_NEW_DOCUMENT
+            //noinspection deprecation
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            shareIntent.setType("text/plain");
+            // STUDENT NOTE: space after sharing text prefix was not respected.
+            shareIntent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_text), mBookTitle));
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
 
         String bookSubTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.SUBTITLE));
         ((TextView) mRootView.findViewById(R.id.fullBookSubTitle)).setText(bookSubTitle);
@@ -143,6 +144,11 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
 
     @Override
     public void onPause() {
+        /**
+         * https://discussions.udacity.com/search?q=alexandria%20tablet
+         * http://stackoverflow.com/questions/7508044/android-fragment-no-view-found-for-id
+         * http://stackoverflow.com/questions/25844394/no-view-found-for-id-0x7f0a001a-mypackage-name-for-fragment-maps435e2398-2
+         */
         super.onDestroyView();
         if (MainActivity.IS_TABLET && mRootView.findViewById(R.id.right_container) == null) {
             getActivity().getSupportFragmentManager().popBackStack();
