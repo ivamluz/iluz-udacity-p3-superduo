@@ -149,6 +149,7 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
          * http://stackoverflow.com/questions/7508044/android-fragment-no-view-found-for-id
          * http://stackoverflow.com/questions/25844394/no-view-found-for-id-0x7f0a001a-mypackage-name-for-fragment-maps435e2398-2
          */
+        // STUDENT NOTE: not fixed yet!
         super.onDestroyView();
         if (MainActivity.IS_TABLET && mRootView.findViewById(R.id.right_container) == null) {
             getActivity().getSupportFragmentManager().popBackStack();
