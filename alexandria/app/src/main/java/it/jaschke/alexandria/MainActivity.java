@@ -141,14 +141,15 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         BookDetail fragment = new BookDetail();
         fragment.setArguments(args);
 
-        int id = R.id.container;
+        int containerViewId = R.id.container;
         if (findViewById(R.id.right_container) != null) {
-            id = R.id.right_container;
+            containerViewId = R.id.right_container;
         }
+
         getSupportFragmentManager().beginTransaction()
-                .replace(id, fragment)
+                .replace(containerViewId, fragment, ean)
                 .addToBackStack("Book Detail")
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     private class MessageReceiver extends BroadcastReceiver {
