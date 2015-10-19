@@ -19,10 +19,10 @@ import java.util.Date;
  * Created by yehya khaled on 2/27/2015.
  */
 public class PagerFragment extends Fragment {
-    public static final int NUM_PAGES = 5;
+    private static final int NUM_PAGES = 5;
     public ViewPager mPagerHandler;
     private myPageAdapter mPagerAdapter;
-    private MainScreenFragment[] viewFragments = new MainScreenFragment[5];
+    private final MainScreenFragment[] viewFragments = new MainScreenFragment[5];
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,13 +30,13 @@ public class PagerFragment extends Fragment {
         mPagerHandler = (ViewPager) rootView.findViewById(R.id.pager);
         mPagerAdapter = new myPageAdapter(getChildFragmentManager());
         for (int i = 0; i < NUM_PAGES; i++) {
-            Date fragmentdate = new Date(System.currentTimeMillis() + ((i - 2) * 86400000));
-            SimpleDateFormat mformat = new SimpleDateFormat("yyyy-MM-dd");
+            Date fragmentDate = new Date(System.currentTimeMillis() + ((i - 2) * 86400000));
+            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
             viewFragments[i] = new MainScreenFragment();
-            viewFragments[i].setFragmentDate(mformat.format(fragmentdate));
+            viewFragments[i].setFRAGMENT_DATE(mFormat.format(fragmentDate));
         }
         mPagerHandler.setAdapter(mPagerAdapter);
-        mPagerHandler.setCurrentItem(MainActivity.current_fragment);
+        mPagerHandler.setCurrentItem(MainActivity.currentFragment);
         return rootView;
     }
 

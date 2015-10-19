@@ -23,7 +23,8 @@
 
         <provider
             android:name=".ScoresProvider"
-            android:authorities="barqsoft.footballscores"/>
+            android:authorities="barqsoft.footballscores"
+            android:exported="false"/>
 
         <activity
             android:name=".AboutActivity"
@@ -33,7 +34,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="barqsoft.footballscores.MainActivity"/>
         </activity>
-        <service android:name=".service.myFetchService"/>
+        <service android:name=".service.FootballDataService"/>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -12,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
-        >
+        android:baselineAligned="false">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -24,6 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:contentDescription="@string/home_team_crest"
                 android:id="@+id/home_crest"/>
 
             <TextView
@@ -33,6 +35,7 @@
                 android:textSize="@dimen/TeamNames"
                 android:gravity="center"
                 android:text="@string/test_text"
+                tools:text="@string/test_text"
                 android:id="@+id/home_name"/>
         </LinearLayout>
 
@@ -73,6 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:contentDescription="@string/away_team_crest"
                 android:id="@+id/away_crest"/>
 
             <TextView

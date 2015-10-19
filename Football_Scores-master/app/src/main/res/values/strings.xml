@@ -19,6 +19,10 @@
     <string name="semi_final">Semi Final</string>
     <string name="final_text">Final</string>
     <string name="share_text">Share</string>
+
+    <string name="home_team_crest">Home team crest</string>
+    <string name="away_team_crest">Home team crest</string>
+
     <string name="about">About</string>
     <string name="about_text">
         This Application get Football Matches Score for the Premier League, Seria A, Bundesliga, Primera Division
