@@ -61,19 +61,35 @@ public class Utilities {
             //as you go.
             case "Arsenal FC":
                 return R.drawable.arsenal;
+            case "Aston Villa FC":
+                return R.drawable.aston_villa;
+            case "Chelsea FC":
+                return R.drawable.chelsea;
+            case "Crystal Palace FC":
+                return R.drawable.crystal_palace_fc;
             case "Everton FC":
                 return R.drawable.everton_fc_logo1;
             case "Leicester City FC":
                 return R.drawable.leicester_city_fc_hd_logo;
+            case "Liverpool FC":
+                return R.drawable.liverpool;
+            case "Manchester City FC":
+                return R.drawable.manchester_city;
             case "Manchester United FC":
                 return R.drawable.manchester_united;
-            case "Stoke City FC":
+            case "Newcastle United FC":
+                return R.drawable.newcastle_united;
+            case "Queens Park Rangers": // FIXME: 19/10/15
+                return R.drawable.queens_park_rangers_hd_logo;
+            case "Southampton FC":
+                return R.drawable.southampton_fc;
+            case "Stoke City FC": // FIXME: 19/10/15
                 return R.drawable.stoke_city;
             case "Sunderland AFC":
                 return R.drawable.sunderland;
             case "Swansea City": // FIXME: 19/10/15
                 return R.drawable.swansea_city_afc;
-            case "Tottenham Hotspur FC":
+            case "Tottenham Hotspur FC": // FIXME: 19/10/15
                 return R.drawable.tottenham_hotspur;
             case "West Bromwich Albion FC":
                 return R.drawable.west_bromwich_albion_hd_logo;
