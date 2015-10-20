@@ -1,5 +1,7 @@
 package barqsoft.footballscores;
 
+import android.content.Context;
+
 /**
  * Created by yehya khaled on 3/3/2015.
  */
@@ -10,47 +12,63 @@ public class Utilities {
     public static final int PRIMERA_DIVISION = 358;
     public static final int BUNDESLIGA = 351;
 
-    public static String getLeague(int leagueId) {
+    public static String getLeagueName(int leagueId, Context context) {
+        validateContext(context);
+
         switch (leagueId) {
             case SERIE_A:
-                return "Seria A";
+                return context.getString(R.string.league_name_serie_a);
             case PREMIER_LEGAUE:
-                return "Premier League";
+                return context.getString(R.string.league_name_premier_league);
             case CHAMPIONS_LEAGUE:
-                return "UEFA Champions League";
+                return context.getString(R.string.league_name_champions_league);
             case PRIMERA_DIVISION:
-                return "Primera Division";
+                return context.getString(R.string.league_name_primera_division);
             case BUNDESLIGA:
-                return "Bundesliga";
+                return context.getString(R.string.league_name_bundesliga);
             default:
-                return "Not known League Please report";
+                return context.getString(R.string.league_name_unknown);
         }
     }
 
-    public static String getMatchDay(int match_day, int league_num) {
-        if (league_num == CHAMPIONS_LEAGUE) {
-            if (match_day <= 6) {
-                return "Group Stages, Match day : 6";
-            } else if (match_day == 7 || match_day == 8) {
-                return "First Knockout round";
-            } else if (match_day == 9 || match_day == 10) {
-                return "QuarterFinal";
-            } else if (match_day == 11 || match_day == 12) {
-                return "SemiFinal";
-            } else {
-                return "Final";
-            }
+    public static String getMatchPhase(int matchDay, int leagueId, Context context) {
+        validateContext(context);
+
+        if (leagueId != CHAMPIONS_LEAGUE) {
+            return context.getString(R.string.match_phase_general_group_stages, matchDay);
+        }
+
+        if (matchDay <= 6) {
+            return context.getString(R.string.match_phase_champions_league_group_stages, matchDay);
+        } else if (matchDay == 7 || matchDay == 8) {
+            return context.getString(R.string.match_phase_first_knockout_round);
+        } else if (matchDay == 9 || matchDay == 10) {
+            return context.getString(R.string.match_phase_quarter_finals);
+        } else if (matchDay == 11 || matchDay == 12) {
+            return context.getString(R.string.match_phase_semi_finals);
         } else {
-            return "Match day : " + String.valueOf(match_day);
+            return context.getString(R.string.match_phase_final);
         }
     }
 
-    public static String getScores(int homeGoals, int awayGoals) {
-        if (homeGoals < 0 || awayGoals < 0) {
-            return " - ";
-        } else {
-            return String.valueOf(homeGoals) + " - " + String.valueOf(awayGoals);
+    private static void validateContext(Context context) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context should not be null!");
         }
+    }
+
+    public static String getFormattedScore(int homeGoals, int awayGoals, Context context) {
+        validateContext(context);
+
+        if (isValidScore(homeGoals, awayGoals)) {
+            return context.getString(R.string.match_score, homeGoals, awayGoals);
+        } else {
+            return context.getString(R.string.match_score, "", "");
+        }
+    }
+
+    private static boolean isValidScore(int homeGoals, int awayGoals) {
+        return (homeGoals >= 0 && awayGoals >= 0);
     }
 
     public static int getTeamCrestByTeamName(String teamName) {

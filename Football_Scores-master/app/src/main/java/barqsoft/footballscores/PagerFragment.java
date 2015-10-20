@@ -20,6 +20,7 @@ import java.util.Date;
  */
 public class PagerFragment extends Fragment {
     private static final int NUM_PAGES = 5;
+    public static final String DATE_FORMAT_FOR_SEARCH = "yyyy-MM-dd";
     public ViewPager mPagerHandler;
     private myPageAdapter mPagerAdapter;
     private final MainScreenFragment[] viewFragments = new MainScreenFragment[5];
@@ -31,9 +32,9 @@ public class PagerFragment extends Fragment {
         mPagerAdapter = new myPageAdapter(getChildFragmentManager());
         for (int i = 0; i < NUM_PAGES; i++) {
             Date fragmentDate = new Date(System.currentTimeMillis() + ((i - 2) * 86400000));
-            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_FOR_SEARCH);
             viewFragments[i] = new MainScreenFragment();
-            viewFragments[i].setFRAGMENT_DATE(mFormat.format(fragmentDate));
+            viewFragments[i].setFragmentDate(simpleDateFormat.format(fragmentDate));
         }
         mPagerHandler.setAdapter(mPagerAdapter);
         mPagerHandler.setCurrentItem(MainActivity.currentFragment);
@@ -79,7 +80,7 @@ public class PagerFragment extends Fragment {
                 Time time = new Time();
                 time.setToNow();
                 // Otherwise, the format is just the day of the week (e.g "Wednesday".
-                SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+                SimpleDateFormat dayFormat = new SimpleDateFormat(getString(R.string.week_day_format));
                 return dayFormat.format(dateInMillis);
             }
         }

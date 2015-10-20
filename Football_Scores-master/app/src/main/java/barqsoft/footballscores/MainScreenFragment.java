@@ -21,7 +21,7 @@ import barqsoft.footballscores.service.FootballDataService;
 public class MainScreenFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private ScoresAdapter mScoresAdapter;
     private static final int SCORES_LOADER = 0;
-    private final String[] FRAGMENT_DATE = new String[1];
+    private final String[] mFragmentDate = new String[1];
 
     public MainScreenFragment() {
     }
@@ -31,8 +31,8 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
         getActivity().startService(service_start);
     }
 
-    public void setFRAGMENT_DATE(String date) {
-        FRAGMENT_DATE[0] = date;
+    public void setFragmentDate(String date) {
+        mFragmentDate[0] = date;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(getActivity(), DatabaseContract.scores_table.buildScoreWithDate(),
-                null, null, FRAGMENT_DATE, null);
+                null, null, mFragmentDate, null);
     }
 
     @Override

@@ -24,7 +24,7 @@ public class ScoresAdapter extends CursorAdapter {
     private static final int COL_ID = 8;
     private static final int COL_MATCH_TIME = 2;
     public double DETAIL_MATCH_ID = 0;
-    private final String FOOTBALL_SCORES_HASHTAG = "#Football_Scores";
+//    private final String FOOTBALL_SCORES_HASHTAG = "#Football_Scores";
 
     public ScoresAdapter(Context context, Cursor cursor, int flags) {
         super(context, cursor, flags);
@@ -45,7 +45,7 @@ public class ScoresAdapter extends CursorAdapter {
         mHolder.homeTeamName.setText(cursor.getString(COL_HOME));
         mHolder.awayTeamName.setText(cursor.getString(COL_AWAY));
         mHolder.date.setText(cursor.getString(COL_MATCH_TIME));
-        mHolder.score.setText(Utilities.getScores(cursor.getInt(COL_HOME_GOALS), cursor.getInt(COL_AWAY_GOALS)));
+        mHolder.score.setText(Utilities.getFormattedScore(cursor.getInt(COL_HOME_GOALS), cursor.getInt(COL_AWAY_GOALS), context));
         mHolder.matchId = cursor.getDouble(COL_ID);
         mHolder.homeTeamCrest.setImageResource(Utilities.getTeamCrestByTeamName(
                 cursor.getString(COL_HOME)));
@@ -63,18 +63,21 @@ public class ScoresAdapter extends CursorAdapter {
 
             container.addView(detailView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                     , ViewGroup.LayoutParams.MATCH_PARENT));
-            TextView match_day = (TextView) detailView.findViewById(R.id.matchday_textview);
-            match_day.setText(Utilities.getMatchDay(cursor.getInt(COL_MATCH_DAY),
-                    cursor.getInt(COL_LEAGUE)));
+
+            TextView matchDay = (TextView) detailView.findViewById(R.id.matchday_textview);
+            matchDay.setText(Utilities.getMatchPhase(cursor.getInt(COL_MATCH_DAY),
+                    cursor.getInt(COL_LEAGUE), context));
+
             TextView league = (TextView) detailView.findViewById(R.id.league_textview);
-            league.setText(Utilities.getLeague(cursor.getInt(COL_LEAGUE)));
-            Button share_button = (Button) detailView.findViewById(R.id.share_button);
-            share_button.setOnClickListener(new View.OnClickListener() {
+            league.setText(Utilities.getLeagueName(cursor.getInt(COL_LEAGUE), context));
+
+            Button shareButton = (Button) detailView.findViewById(R.id.share_button);
+            shareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //add Share Action
-                    context.startActivity(createShareForecastIntent(mHolder.homeTeamName.getText() + " "
-                            + mHolder.score.getText() + " " + mHolder.awayTeamName.getText() + " "));
+                    String shareText = context.getString(R.string.share_text, mHolder.homeTeamName.getText(), mHolder.score.getText(), mHolder.awayTeamName.getText());
+                    context.startActivity(createShareIntent(shareText));
                 }
             });
         } else {
@@ -83,11 +86,11 @@ public class ScoresAdapter extends CursorAdapter {
     }
 
     @SuppressWarnings("deprecation")
-    public Intent createShareForecastIntent(String ShareText) {
+    public Intent createShareIntent(String shareText) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, ShareText + FOOTBALL_SCORES_HASHTAG);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
 
         return shareIntent;
     }
