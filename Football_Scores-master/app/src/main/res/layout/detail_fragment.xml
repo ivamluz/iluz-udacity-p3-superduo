@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1"
-            android:text="@string/test_text"
+            tools:text="@string/test_text"
             android:textColor="@android:color/black"
             android:textSize="@dimen/League"
             android:id="@+id/league_textview"/>
@@ -24,7 +25,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1"
-            android:text="@string/test_text"
+            tools:text="@string/test_text"
             android:textSize="@dimen/League"
             android:textColor="@android:color/black"
             android:id="@+id/matchday_textview"/>
@@ -41,6 +42,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/share_action"
+            android:contentDescription="@string/share_action"
             android:id="@+id/share_button"
             android:drawableLeft="@android:drawable/ic_menu_share"
             android:drawableStart="@android:drawable/ic_menu_share"

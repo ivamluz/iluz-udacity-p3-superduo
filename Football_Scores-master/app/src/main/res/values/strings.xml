@@ -45,4 +45,13 @@
     <string name="match_phase_general_group_stages">Match day: %1$s</string>
 
     <string name="match_score">%1$s - %2$s</string>
+
+    <string name="content_description_home_team_name">Home team: %1$s</string>
+    <string name="content_description_away_team_name">Away team: %1$s</string>
+    <string name="content_description_home_team_crest">Home team crest: %1$s</string>
+    <string name="content_description_away_team_crest">Away team crest: %1$s</string>
+    <string name="content_description_match_time">Match time: %1$s</string>
+    <string name="content_description_match_score">Match score: %1$s</string>
+    <string name="content_description_league_name">League: %1$s</string>
+
 </resources>
