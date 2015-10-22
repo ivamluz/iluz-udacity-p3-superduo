@@ -24,7 +24,6 @@ public class ScoresAdapter extends CursorAdapter {
     private static final int COL_ID = 8;
     private static final int COL_MATCH_TIME = 2;
     public double DETAIL_MATCH_ID = 0;
-//    private final String FOOTBALL_SCORES_HASHTAG = "#Football_Scores";
 
     public ScoresAdapter(Context context, Cursor cursor, int flags) {
         super(context, cursor, flags);
