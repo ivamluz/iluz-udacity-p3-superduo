@@ -25,7 +25,7 @@ public class ScoresProvider extends ContentProvider {
     private static final String SCORES_BY_DATE =
             DatabaseContract.scores_table.DATE_COL + " LIKE ?";
     private static final String SCORES_BY_ID =
-            DatabaseContract.scores_table.MATCH_ID + " = ?";
+            DatabaseContract.scores_table.MATCH_ID_COL + " = ?";
 
 
     static UriMatcher buildUriMatcher() {

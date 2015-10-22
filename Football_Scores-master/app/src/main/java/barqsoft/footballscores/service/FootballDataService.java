@@ -210,15 +210,15 @@ public class FootballDataService extends IntentService {
                     String matchDay = matchData.getString(MATCH_DAY);
 
                     ContentValues matchValues = new ContentValues();
-                    matchValues.put(DatabaseContract.scores_table.MATCH_ID, matchId);
+                    matchValues.put(DatabaseContract.scores_table.MATCH_ID_COL, matchId);
                     matchValues.put(DatabaseContract.scores_table.DATE_COL, mDate);
-                    matchValues.put(DatabaseContract.scores_table.TIME_COL, mTime);
+                    matchValues.put(DatabaseContract.scores_table.MATCH_TIME_COL, mTime);
                     matchValues.put(DatabaseContract.scores_table.HOME_COL, homeTeam);
                     matchValues.put(DatabaseContract.scores_table.AWAY_COL, awayTeam);
                     matchValues.put(DatabaseContract.scores_table.HOME_GOALS_COL, homeGoals);
                     matchValues.put(DatabaseContract.scores_table.AWAY_GOALS_COL, awayGoals);
                     matchValues.put(DatabaseContract.scores_table.LEAGUE_COL, League);
-                    matchValues.put(DatabaseContract.scores_table.MATCH_DAY, matchDay);
+                    matchValues.put(DatabaseContract.scores_table.MATCH_DAY_COL, matchDay);
                     //log spam
 
                     //Log.v(LOG_TAG,matchId);

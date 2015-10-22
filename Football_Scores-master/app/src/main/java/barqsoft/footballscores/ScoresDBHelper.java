@@ -22,15 +22,15 @@ public class ScoresDBHelper extends SQLiteOpenHelper {
         final String CreateScoresTable = "CREATE TABLE " + DatabaseContract.SCORES_TABLE + " ("
                 + scores_table._ID + " INTEGER PRIMARY KEY,"
                 + scores_table.DATE_COL + " TEXT NOT NULL,"
-                + scores_table.TIME_COL + " INTEGER NOT NULL,"
+                + scores_table.MATCH_TIME_COL + " INTEGER NOT NULL,"
                 + scores_table.HOME_COL + " TEXT NOT NULL,"
                 + scores_table.AWAY_COL + " TEXT NOT NULL,"
                 + scores_table.LEAGUE_COL + " INTEGER NOT NULL,"
                 + scores_table.HOME_GOALS_COL + " TEXT NOT NULL,"
                 + scores_table.AWAY_GOALS_COL + " TEXT NOT NULL,"
-                + scores_table.MATCH_ID + " INTEGER NOT NULL,"
-                + scores_table.MATCH_DAY + " INTEGER NOT NULL,"
-                + " UNIQUE (" + scores_table.MATCH_ID + ") ON CONFLICT REPLACE"
+                + scores_table.MATCH_ID_COL + " INTEGER NOT NULL,"
+                + scores_table.MATCH_DAY_COL + " INTEGER NOT NULL,"
+                + " UNIQUE (" + scores_table.MATCH_ID_COL + ") ON CONFLICT REPLACE"
                 + " );";
         db.execSQL(CreateScoresTable);
     }

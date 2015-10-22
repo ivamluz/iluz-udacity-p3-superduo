@@ -14,13 +14,13 @@ public class DatabaseContract {
         //Table data
         public static final String LEAGUE_COL = "league";
         public static final String DATE_COL = "date";
-        public static final String TIME_COL = "time";
+        public static final String MATCH_TIME_COL = "time";
         public static final String HOME_COL = "home";
         public static final String AWAY_COL = "away";
         public static final String HOME_GOALS_COL = "home_goals";
         public static final String AWAY_GOALS_COL = "away_goals";
-        public static final String MATCH_ID = "match_id";
-        public static final String MATCH_DAY = "match_day";
+        public static final String MATCH_ID_COL = "match_id";
+        public static final String MATCH_DAY_COL = "match_day";
 
         //public static Uri SCORES_CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH)
         //.build();

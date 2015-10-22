@@ -24,7 +24,7 @@
         <provider
             android:name=".ScoresProvider"
             android:authorities="barqsoft.footballscores"
-            android:exported="false"/>
+            android:exported="true"/>
 
         <activity
             android:name=".AboutActivity"
@@ -35,6 +35,27 @@
                 android:value="barqsoft.footballscores.MainActivity"/>
         </activity>
         <service android:name=".service.FootballDataService"/>
+
+        <receiver
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/scores_widget_name"
+            android:name="ScoresWidgetProvider" >
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/scores_widget_info" />
+        </receiver>
+
+
+        <service
+            android:name="ScoresWidgetRemoteViewsService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" >
+        </service>
+
     </application>
 
 </manifest>
