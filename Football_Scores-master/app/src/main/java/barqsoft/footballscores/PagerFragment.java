@@ -20,7 +20,6 @@ import java.util.Date;
  */
 public class PagerFragment extends Fragment {
     private static final int NUM_PAGES = 5;
-    public static final String DATE_FORMAT_FOR_SEARCH = "yyyy-MM-dd";
     public ViewPager mPagerHandler;
     private myPageAdapter mPagerAdapter;
     private final MainScreenFragment[] viewFragments = new MainScreenFragment[5];
@@ -32,7 +31,8 @@ public class PagerFragment extends Fragment {
         mPagerAdapter = new myPageAdapter(getChildFragmentManager());
         for (int i = 0; i < NUM_PAGES; i++) {
             Date fragmentDate = new Date(System.currentTimeMillis() + ((i - 2) * 86400000));
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_FOR_SEARCH);
+            String dateFormat = getString(R.string.data_query_date_format);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
             viewFragments[i] = new MainScreenFragment();
             viewFragments[i].setFragmentDate(simpleDateFormat.format(fragmentDate));
         }
