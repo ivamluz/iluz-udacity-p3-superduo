@@ -11,7 +11,7 @@ import android.widget.RemoteViews;
  * Created by iluz on 21/10/15.
  */
 public class ScoresWidgetProvider extends AppWidgetProvider {
-    public static String EXTRA_LIST_VIEW_ROW_NUMBER = "barqsoft.footballscores.widget.listview.item_position";
+    public static final String EXTRA_LIST_VIEW_ROW_NUMBER = "barqsoft.footballscores.widget.listview.item_position";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,

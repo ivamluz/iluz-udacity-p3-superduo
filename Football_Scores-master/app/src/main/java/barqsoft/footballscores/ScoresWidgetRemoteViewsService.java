@@ -35,7 +35,7 @@ public class ScoresWidgetRemoteViewsService extends RemoteViewsService {
             DatabaseContract.scores_table.AWAY_COL,
             DatabaseContract.scores_table.AWAY_GOALS_COL,
     };
-    public final String LOG_TAG = ScoresWidgetRemoteViewsService.class.getSimpleName();
+    private static  final String LOG_TAG = ScoresWidgetRemoteViewsService.class.getSimpleName();
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
