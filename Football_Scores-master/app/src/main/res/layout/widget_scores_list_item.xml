@@ -5,6 +5,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical"
               android:id="@+id/widget_scores_list_item">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -12,10 +13,11 @@
         tools:text="League Name"
         android:layout_gravity="center_horizontal"/>
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="@dimen/widget_scores_line_item_height"
-                  android:orientation="horizontal"
-                  android:paddingTop="@dimen/widget_scores_line_item_padding_top">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/widget_scores_line_item_height"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/widget_scores_line_item_padding_top">
 
         <LinearLayout
             android:layout_width="@dimen/widget_scores_team_container_widget"

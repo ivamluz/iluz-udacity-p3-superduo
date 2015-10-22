@@ -13,20 +13,17 @@ import android.support.annotation.NonNull;
  * Created by yehya khaled on 2/25/2015.
  */
 public class ScoresProvider extends ContentProvider {
-    private static ScoresDBHelper mOpenHelper;
     private static final int MATCHES = 100;
     private static final int MATCHES_WITH_LEAGUE = 101;
     private static final int MATCHES_WITH_ID = 102;
     private static final int MATCHES_WITH_DATE = 103;
-    private final UriMatcher URI_MATCHER = buildUriMatcher();
-//    private static final SQLiteQueryBuilder ScoreQuery =
-//            new SQLiteQueryBuilder();
     private static final String SCORES_BY_LEAGUE = DatabaseContract.scores_table.LEAGUE_COL + " = ?";
     private static final String SCORES_BY_DATE =
             DatabaseContract.scores_table.DATE_COL + " LIKE ?";
     private static final String SCORES_BY_ID =
             DatabaseContract.scores_table.MATCH_ID_COL + " = ?";
-
+    private static ScoresDBHelper mOpenHelper;
+    private final UriMatcher URI_MATCHER = buildUriMatcher();
 
     static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);

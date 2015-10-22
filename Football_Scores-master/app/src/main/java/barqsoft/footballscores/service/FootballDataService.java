@@ -133,7 +133,7 @@ public class FootballDataService extends IntentService {
 //        final String PRIMERA_LIGA = "402";
 //        final String Bundesliga3 = "403";
 //        final String EREDIVISIE = "404";
-        final String CHAMPIONS_LEAGUE  = "405";
+        final String CHAMPIONS_LEAGUE = "405";
 
 
         final String SEASON_LINK = "http://api.football-data.org/alpha/soccerseasons/";
