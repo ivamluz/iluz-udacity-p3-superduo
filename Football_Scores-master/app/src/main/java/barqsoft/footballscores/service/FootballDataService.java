@@ -45,15 +45,12 @@ public class FootballDataService extends IntentService {
         //Creating fetch URL
         final String BASE_URL = "http://api.football-data.org/alpha/fixtures"; //Base URL
         final String QUERY_TIME_FRAME = "timeFrame"; //Time Frame parameter to determine days
-        //final String QUERY_MATCH_DAY = "matchday";
 
         Uri fetch_build = Uri.parse(BASE_URL).buildUpon().
                 appendQueryParameter(QUERY_TIME_FRAME, timeFrame).build();
-        //Log.v(LOG_TAG, "The url we are looking at is: "+fetch_build.toString()); //log spam
         HttpURLConnection m_connection = null;
         BufferedReader reader = null;
         String JSON_data = null;
-        //Opening Connection
         try {
             URL fetch = new URL(fetch_build.toString());
             m_connection = (HttpURLConnection) fetch.openConnection();
@@ -124,15 +121,9 @@ public class FootballDataService extends IntentService {
         // be updated. Feel free to use the codes
         final String BUNDESLIGA1 = "394";
         final String BUNDESLIGA2 = "395";
-//        final String LIGUE1 = "396";
-//        final String LIGUE2 = "397";
         final String PREMIER_LEAGUE = "398";
         final String PRIMERA_DIVISION = "399";
-//        final String SEGUNDA_DIVISION = "400";
         final String SERIE_A = "401";
-//        final String PRIMERA_LIGA = "402";
-//        final String Bundesliga3 = "403";
-//        final String EREDIVISIE = "404";
         final String CHAMPIONS_LEAGUE = "405";
 
 
@@ -221,26 +212,16 @@ public class FootballDataService extends IntentService {
                     matchValues.put(DatabaseContract.scores_table.MATCH_DAY_COL, matchDay);
                     //log spam
 
-                    //Log.v(LOG_TAG,matchId);
-                    //Log.v(LOG_TAG,mDate);
-                    //Log.v(LOG_TAG,mTime);
                     Log.v(LOG_TAG, "Home team: " + homeTeam);
                     Log.v(LOG_TAG, "Away team: " + awayTeam);
-                    //Log.v(LOG_TAG,Home_goals);
-                    //Log.v(LOG_TAG,Away_goals);
 
                     values.add(matchValues);
                 }
             }
-//            int inserted_data = 0;
             ContentValues[] insert_data = new ContentValues[values.size()];
             values.toArray(insert_data);
-//            inserted_data = mContext.getContentResolver().bulkInsert(
-//                    DatabaseContract.BASE_CONTENT_URI, insert_data);
             mContext.getContentResolver().bulkInsert(
                     DatabaseContract.BASE_CONTENT_URI, insert_data);
-
-            //Log.v(LOG_TAG,"Succesfully Inserted : " + String.valueOf(inserted_data));
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage());
         }
