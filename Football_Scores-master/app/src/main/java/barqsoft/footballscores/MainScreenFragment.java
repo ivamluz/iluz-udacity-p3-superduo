@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import barqsoft.footballscores.service.FootballDataService;
+import barqsoft.footballscores.data.DatabaseContract;
 
 /**
  * A placeholder fragment containing a simple view.

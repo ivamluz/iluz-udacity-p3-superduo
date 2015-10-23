@@ -1,4 +1,4 @@
-package barqsoft.footballscores;
+package barqsoft.footballscores.widget;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,10 @@ import android.widget.RemoteViewsService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import barqsoft.footballscores.R;
+import barqsoft.footballscores.utils.Utilities;
+import barqsoft.footballscores.data.DatabaseContract;
 
 /**
  * Created by iluz on 21/10/15.

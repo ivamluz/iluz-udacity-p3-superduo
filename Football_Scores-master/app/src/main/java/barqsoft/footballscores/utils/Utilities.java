@@ -1,6 +1,8 @@
-package barqsoft.footballscores;
+package barqsoft.footballscores.utils;
 
 import android.content.Context;
+
+import barqsoft.footballscores.R;
 
 /**
  * Created by yehya khaled on 3/3/2015.

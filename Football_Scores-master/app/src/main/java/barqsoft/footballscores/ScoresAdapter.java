@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import barqsoft.footballscores.utils.Utilities;
+
 /**
  * Created by yehya khaled on 2/26/2015.
  */
