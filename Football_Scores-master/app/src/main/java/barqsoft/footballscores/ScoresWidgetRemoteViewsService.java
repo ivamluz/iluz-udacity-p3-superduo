@@ -1,5 +1,6 @@
 package barqsoft.footballscores;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -90,13 +91,6 @@ public class ScoresWidgetRemoteViewsService extends RemoteViewsService {
 
                 RemoteViews widgetRow = new RemoteViews(getPackageName(), R.layout.widget_scores_list_item);
                 Context context = getApplicationContext();
-
-//                Intent intent = new Intent(context, MainActivity.class);
-//                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-//                views.setOnClickPendingIntent(views.getLayoutId(), pendingIntent);
-                Intent fillInIntent = new Intent();
-                fillInIntent.putExtra(ScoresWidgetProvider.EXTRA_LIST_VIEW_ROW_NUMBER, position);
-                widgetRow.setOnClickFillInIntent(R.id.widget_scores_list_item, fillInIntent);
 
                 int leagueId = Integer.valueOf(dataset.getString(LEAGUE_COL_INDEX));
                 String leagueName = Utilities.getLeagueName(leagueId, context);
