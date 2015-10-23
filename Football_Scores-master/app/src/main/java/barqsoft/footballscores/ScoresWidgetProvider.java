@@ -25,6 +25,7 @@ public class ScoresWidgetProvider extends AppWidgetProvider {
 
             views.setRemoteAdapter(R.id.widget_scores_list,
                     new Intent(context, ScoresWidgetRemoteViewsService.class));
+            views.setEmptyView(R.id.widget_scores_list, R.id.widget_empty_list_item);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }

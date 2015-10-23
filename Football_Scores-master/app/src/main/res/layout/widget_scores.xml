@@ -33,4 +33,11 @@
         android:id="@+id/widget_scores_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/widget_empty_list_item"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:text="@string/empty_scores"/>
 </LinearLayout>

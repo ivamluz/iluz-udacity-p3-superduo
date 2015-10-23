@@ -52,4 +52,6 @@
     <string name="content_description_league_name">League: %1$s</string>
 
     <string name="data_query_date_format">yyyy-MM-dd</string>
+
+    <string name="empty_scores">No matches available.</string>
 </resources>

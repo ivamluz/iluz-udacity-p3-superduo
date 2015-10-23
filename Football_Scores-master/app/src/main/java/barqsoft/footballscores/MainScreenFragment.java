@@ -19,6 +19,9 @@ import barqsoft.footballscores.service.FootballDataService;
  * A placeholder fragment containing a simple view.
  */
 public class MainScreenFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final String LOG_TAG = MainScreenFragment.class.getSimpleName();
+
     private static final int SCORES_LOADER = 0;
     private final String[] mFragmentDate = new String[1];
     private ScoresAdapter mScoresAdapter;
@@ -41,13 +44,12 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
         getLoaderManager().initLoader(SCORES_LOADER, null, this);
 
         mScoresAdapter = new ScoresAdapter(getActivity(), null, 0);
-        
+        mScoresAdapter.DETAIL_MATCH_ID = MainActivity.selectedMatchId;
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         final ListView scoresList = (ListView) rootView.findViewById(R.id.scores_list);
         scoresList.setAdapter(mScoresAdapter);
-        mScoresAdapter.DETAIL_MATCH_ID = MainActivity.selectedMatchId;
 
         scoresList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -58,6 +60,10 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
                 mScoresAdapter.notifyDataSetChanged();
             }
         });
+
+        // http://stackoverflow.com/a/9297055
+        View empty = rootView.findViewById(R.id.empty_list_item);
+        scoresList.setEmptyView(empty);
 
         return rootView;
     }
