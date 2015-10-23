@@ -6,11 +6,11 @@ import android.content.Context;
  * Created by yehya khaled on 3/3/2015.
  */
 public class Utilities {
-    public static final int SERIE_A = 357;
-    public static final int PREMIER_LEGAUE = 354;
-    public static final int CHAMPIONS_LEAGUE = 405;
-    public static final int PRIMERA_DIVISION = 358;
-    public static final int BUNDESLIGA = 351;
+    private static final int SERIE_A = 357;
+    private static final int PREMIER_LEGAUE = 354;
+    private static final int CHAMPIONS_LEAGUE = 405;
+    private static final int PRIMERA_DIVISION = 358;
+    private static final int BUNDESLIGA = 351;
 
     public static String getLeagueName(int leagueId, Context context) {
         validateContext(context);
